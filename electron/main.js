@@ -1,0 +1,53 @@
+const { app, BrowserWindow, screen, session, ipcMain } = require('electron')
+const path = require('path')
+
+const WIN_SIZE = 320
+const MARGIN = 20
+
+function createWindow() {
+  const { workArea } = screen.getPrimaryDisplay()
+
+  const win = new BrowserWindow({
+    width: WIN_SIZE,
+    height: WIN_SIZE,
+    x: workArea.x + workArea.width - WIN_SIZE - MARGIN,
+    y: workArea.y + workArea.height - WIN_SIZE - MARGIN,
+    frame: false,
+    transparent: true,
+    resizable: true,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    hasShadow: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  })
+
+  // stay above fullscreen apps too
+  win.setAlwaysOnTop(true, 'screen-saver')
+  win.loadFile(path.join(__dirname, '..', 'src', 'index.html'))
+
+  // uncomment to debug the renderer
+  // win.webContents.openDevTools({ mode: 'detach' })
+}
+
+app.whenReady().then(() => {
+  // allow the renderer to use the webcam (getUserMedia)
+  session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => {
+    callback(permission === 'media')
+  })
+
+  ipcMain.on('hamster:quit', () => app.quit())
+
+  createWindow()
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
+})

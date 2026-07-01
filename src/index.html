@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Humster FaceTime</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- hidden webcam source -->
+    <video id="cam" autoplay muted playsinline></video>
+
+    <!-- the hamster lives here -->
+    <div id="stage" class="stage"></div>
+
+    <!-- tiny status line: current + raw emotion -->
+    <div id="hud" class="hud"></div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

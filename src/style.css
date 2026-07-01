@@ -1,0 +1,67 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* the source video is analysed, never shown */
+#cam {
+  display: none;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-app-region: drag; /* drag the window by grabbing the hamster */
+  animation: breathe 3.5s ease-in-out infinite; /* idle "alive" wobble */
+}
+
+.hamster-emoji,
+.hamster-img {
+  position: absolute;
+  transition: opacity 150ms ease;
+}
+
+.hamster-emoji {
+  font-size: 180px;
+  line-height: 1;
+}
+
+.hamster-img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  text-align: center;
+  font: 12px system-ui, sans-serif;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  -webkit-app-region: no-drag;
+  pointer-events: none;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
