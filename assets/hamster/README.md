@@ -1,19 +1,22 @@
 # Hamster art
 
-Drop transparent PNGs here, one per emotion, named exactly:
+Image files here (one per state) are matched by the `key` in `STATES` in
+`src/config.js`, as `<key>.jpg`. File names must match the keys exactly,
+including spaces and hyphens.
 
-- `idle.png`
-- `happy.png`
-- `laugh.png`
-- `sad.png`
-- `angry.png`
-- `shock.png`
+Face states: `idle`, `very-angry`, `gloomy`, `goofy`, `showing-teeth`,
+`duck-like lips`, `an-open-tongue`, `funny-with-an-open-tongue`,
+`raised an eyebrow`, `questioned`, `suspect`, `plotting-smt`, `stone-faced`,
+`scary`, `i-dont-know`.
 
-Tips:
+Pose states: `happy-raised-urms`, `strong-showing-arm`,
+`strict-staring-crossed-his-arms`.
 
-- Use a transparent background and keep every image the same size and centering
-  so switching between them doesn't jump.
-- Any missing file automatically falls back to an emoji placeholder, so you can
-  add art one emotion at a time.
-- To add a new emotion, add its rule in `src/emotions.js` and its file path in
-  `src/config.js` (`assets` map).
+Notes:
+
+- A missing file falls back to an emoji placeholder, so the app still runs.
+- Current art is `.jpg` with a white background. On the transparent overlay that
+  shows as a white square. Export transparent PNGs (and switch the extension in
+  `src/config.js`) for a clean cut-out, or enable runtime white-removal.
+- To add a state: add it to `STATES` in `src/config.js`, add a rule in
+  `src/emotions.js` (face) or `src/pose.js` (body), and drop the image here.

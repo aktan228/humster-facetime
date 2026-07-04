@@ -3,13 +3,26 @@
 
 import { CONFIG } from './config.js'
 
+// Fallback shown only when a state's .jpg is missing.
 const EMOJI = {
   idle: '🐹',
-  happy: '😄',
-  laugh: '😂',
-  sad: '😢',
-  angry: '😠',
-  shock: '😲'
+  'very-angry': '😡',
+  gloomy: '😔',
+  goofy: '😜',
+  'showing-teeth': '😁',
+  'duck-like lips': '😗',
+  'an-open-tongue': '😛',
+  'funny-with-an-open-tongue': '😝',
+  'raised an eyebrow': '🤨',
+  questioned: '❓',
+  suspect: '🧐',
+  'plotting-smt': '😏',
+  'stone-faced': '😐',
+  scary: '😨',
+  'i-dont-know': '🤷',
+  'happy-raised-urms': '🙌',
+  'strong-showing-arm': '💪',
+  'strict-staring-crossed-his-arms': '🙅'
 }
 
 let emojiEl = null

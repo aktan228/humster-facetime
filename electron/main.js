@@ -2,12 +2,22 @@ const { app, BrowserWindow, screen, session, ipcMain } = require('electron')
 const path = require('path')
 
 const WIN_SIZE = 320
+const PREVIEW = { w: 640, h: 520 }
 const MARGIN = 20
+
+let win = null
+
+// keep the window anchored to the bottom-right corner at the given size
+function anchor(w, h) {
+  const { workArea } = screen.getPrimaryDisplay()
+  win.setSize(w, h)
+  win.setPosition(workArea.x + workArea.width - w - MARGIN, workArea.y + workArea.height - h - MARGIN)
+}
 
 function createWindow() {
   const { workArea } = screen.getPrimaryDisplay()
 
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: WIN_SIZE,
     height: WIN_SIZE,
     x: workArea.x + workArea.width - WIN_SIZE - MARGIN,
@@ -40,6 +50,9 @@ app.whenReady().then(() => {
   })
 
   ipcMain.on('hamster:quit', () => app.quit())
+  ipcMain.on('hamster:preview', (_e, on) =>
+    anchor(on ? PREVIEW.w : WIN_SIZE, on ? PREVIEW.h : WIN_SIZE)
+  )
 
   createWindow()
 
