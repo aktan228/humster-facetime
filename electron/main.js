@@ -1,6 +1,11 @@
 const { app, BrowserWindow, screen, session, ipcMain } = require('electron')
 const path = require('path')
 
+// Some Windows webcams spam "Failed to reserve output capture buffer" through the
+// Media Foundation capturer. Fall back to the older DirectShow capturer, which
+// clears the error and stabilizes the stream. Must run before app is ready.
+app.commandLine.appendSwitch('disable-features', 'MediaFoundationVideoCapture')
+
 const WIN_SIZE = 320
 const PREVIEW = { w: 640, h: 520 }
 const MARGIN = 20

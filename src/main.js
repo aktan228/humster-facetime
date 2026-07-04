@@ -103,8 +103,11 @@ function loop() {
         ? faceResult.faceBlendshapes[0].categories
         : null
 
-    // green face mesh preview (no-op unless toggled on with C)
-    drawPreview(faceResult.faceLandmarks)
+    // detect body pose (also used for the preview skeleton)
+    const poseResult = pose ? pose.detectForVideo(video, now) : null
+
+    // preview: green face mesh + thin pose sticks (no-op unless toggled with C)
+    drawPreview(faceResult.faceLandmarks, poseResult ? poseResult.landmarks : null)
 
     let faceState = 'idle'
     let faceConf = 0
@@ -132,8 +135,8 @@ function loop() {
 
     // Body -> gesture (optional). A detected gesture overrides the face.
     let poseRaw = { gesture: null, confidence: 0 }
-    if (pose) {
-      poseRaw = classifyPose(pose.detectForVideo(video, now).landmarks)
+    if (poseResult) {
+      poseRaw = classifyPose(poseResult.landmarks)
     }
 
     const raw = poseRaw.gesture

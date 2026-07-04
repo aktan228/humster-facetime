@@ -2,7 +2,7 @@
 // Toggle with C. Video + mesh are drawn into one canvas (mirrored, selfie-style)
 // so they always stay aligned.
 
-import { DrawingUtils, FaceLandmarker } from 'https://esm.sh/@mediapipe/tasks-vision@0.10.17'
+import { DrawingUtils, FaceLandmarker, PoseLandmarker } from 'https://esm.sh/@mediapipe/tasks-vision@0.10.17'
 
 let canvas = null
 let ctx = null
@@ -34,8 +34,9 @@ export function setPreview(v) {
   window.hamster?.setPreview?.(v)
 }
 
-// landmarks: faceResult.faceLandmarks (array of point arrays), or null.
-export function draw(landmarks) {
+// faceLandmarks: faceResult.faceLandmarks; poseLandmarks: poseResult.landmarks.
+// Either may be null.
+export function draw(faceLandmarks, poseLandmarks) {
   if (!on) return
   const w = video.videoWidth
   const h = video.videoHeight
@@ -51,12 +52,24 @@ export function draw(landmarks) {
   ctx.scale(-1, 1) // mirror so it reads like a selfie
   ctx.drawImage(video, 0, 0, w, h)
 
-  if (landmarks) {
-    for (const lm of landmarks) {
+  // green face mesh
+  if (faceLandmarks) {
+    for (const lm of faceLandmarks) {
       drawer.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_TESSELATION, {
         color: '#00ff88',
         lineWidth: 1
       })
+    }
+  }
+
+  // thin body/arm skeleton sticks
+  if (poseLandmarks) {
+    for (const lm of poseLandmarks) {
+      drawer.drawConnectors(lm, PoseLandmarker.POSE_CONNECTIONS, {
+        color: '#00d0ff',
+        lineWidth: 2
+      })
+      drawer.drawLandmarks(lm, { color: '#ffcc00', radius: 3 })
     }
   }
   ctx.restore()
